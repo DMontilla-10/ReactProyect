@@ -11,6 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Padre from "../components/Padre";
 import Contador from '../components/Ejercicio/Contador/Contador';
 import Login from "../pages/Login";
+import ListarUsuarios from "../pages/Usuarios";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +35,7 @@ const Routes = () => {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              <Link to='/home'> Home </Link>
+              <Link to='/'> Home </Link>
             </Typography>
             <Typography variant="h6" className={classes.title}>
               <Link to='/counter'> Contador </Link>
@@ -42,12 +43,15 @@ const Routes = () => {
             <Typography variant="h6" className={classes.title}>
               <Link to='/login'> Login </Link>
             </Typography>
+            <Typography variant="h6" className={classes.title}>
+              <Link to='/listarUsuarios'> Listar usuarios </Link>
+            </Typography>
           </Toolbar>
         </AppBar>
       </div>
 
     <Switch>
-        <Route path='/home'>
+        <Route exact path='/'>
             <Padre />
         </Route>
         <Router path='/counter'>
@@ -55,6 +59,9 @@ const Routes = () => {
         </Router>
         <Router path='/login'>
             <Login />
+        </Router>
+        <Router path='/listarUsuarios'>
+            <ListarUsuarios />
         </Router>
     </Switch>
 

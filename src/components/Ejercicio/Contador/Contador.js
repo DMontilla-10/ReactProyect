@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import Botón from "../Botón";
 import Typography from "@material-ui/core/Typography";
 import { useStyles } from "./style";
-import { Link } from "react-router-dom";
-import Padre from "../../Padre";
+import { NavLink, Switch } from "react-router-dom";
 
 export default function Contador() {
   const classes = useStyles();

@@ -1,48 +1,67 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import * as axios from "axios";
 
 const loginSchema = Yup.object().shape({
-    password: Yup.string().min(6, "Contraseña demasiado corta").max(15, "Contraseña demasiado larga. Máx 15 caracteres").required("Requerido"),
-    email: Yup.string().email("El email es inválido").required("Requerido")
-})
+  nombre: Yup.string()
+    .min(3, "El nombre debe tener por lo menos 3 letras")
+    .max(100, "Nombre demasiado largo. Máx 100 caracteres")
+    .required("Requerido"),
+  email: Yup.string().email("El email es inválido").required("Requerido"),
+});
 
 const LoginForm = () => {
-    const handleSubmit = (values, {setSubmitting}) => {
-        setTimeout(()=>{
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false)
-        }, 1000)
-    }
+  const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    // setTimeout(()=>{
+    //     alert(JSON.stringify(values, null, 2));
+    //     setSubmitting(false)
+    // }, 1000)
 
-    return (
-        <>
-        <h1>Login</h1>
-        <Formik
-            initialValues={{email: "", password: ""}}
-            onSubmit={handleSubmit}
-            validationSchema={loginSchema}
-        >
-        {({isSubmitting}) => {
-            return (
-                <Form>
-                    <label>
-                        Email: <Field type='email' name='email' />
-                        <ErrorMessage name='email' component='div' />
-                    </label>
-                    <label>
-                        Password: <Field type='password' name='password' />
-                        <ErrorMessage name='password' component='div' />
-                    </label>
-                    <button type='submit' disable={isSubmitting}>
-                        Ingresar
-                    </button>
-                </Form>
-            )
+    axios
+      .post("http://localhost:8000/api/usuarios", {
+        nombre: values.nombre,
+        email: values.email,
+        estado: 1,
+      })
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+      resetForm()
+  };
+
+  return (
+    <>
+      <h1>Login</h1>
+      <Formik
+        initialValues={{ email: "", nombre: "" }}
+        onSubmit={handleSubmit}
+        validationSchema={loginSchema}
+      >
+        {({ isSubmitting }) => {
+          return (
+            <Form>
+              <label>
+                Nombre: <Field type="text" name="nombre" />
+                <ErrorMessage name="nombre" component="div" />
+              </label>
+              <label>
+                Email: <Field type="email" name="email" />
+                <ErrorMessage name="email" component="div" />
+              </label>
+              <button type="submit" disable={isSubmitting}>
+                Ingresar
+              </button>
+            </Form>
+          );
         }}
-        </Formik>
-        </>
-    )
-}
+      </Formik>
+    </>
+  );
+};
 
 export default LoginForm;
