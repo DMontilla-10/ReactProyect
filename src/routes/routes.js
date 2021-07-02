@@ -1,18 +1,20 @@
 import React from "react";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import Padre from "../components/Padre";
-import Contador from '../components/Ejercicio/Contador/Contador';
+import Contador from "../components/Ejercicio/Contador/Contador";
 import Login from "../pages/Login";
 import ListarUsuarios from "../pages/Usuarios";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +28,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// let auth;
+// auth = true;
+
+// const PrivateRoute = ({ component: Component, ...rest }) => {
+//   return (
+//     <Route {...rest}>{auth ? <Component /> : <Redirect to="/login" />}</Route>
+//   );
+// };
+
+let auth = true;
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route {...rest}> {auth ? <Component /> : <Redirect to="/login" />} </Route>
+  )
+}
+
 const Routes = () => {
   const classes = useStyles();
 
@@ -35,36 +54,56 @@ const Routes = () => {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              <Link to='/'> Home </Link>
+              <Link to="/" style={{ color: "#FFF", textDecoration: "none" }}>
+                {" "}
+                Home{" "}
+              </Link>
             </Typography>
             <Typography variant="h6" className={classes.title}>
-              <Link to='/counter'> Contador </Link>
+              <Link
+                to="/counter"
+                style={{ color: "#FFF", textDecoration: "none" }}
+              >
+                {" "}
+                Contador{" "}
+              </Link>
             </Typography>
             <Typography variant="h6" className={classes.title}>
-              <Link to='/login'> Login </Link>
+              <Link
+                to="/login"
+                style={{ color: "#FFF", textDecoration: "none" }}
+              >
+                {" "}
+                Login{" "}
+              </Link>
             </Typography>
             <Typography variant="h6" className={classes.title}>
-              <Link to='/listarUsuarios'> Listar usuarios </Link>
+              <Link
+                to="/listarUsuarios"
+                style={{ color: "#FFF", textDecoration: "none" }}
+              >
+                {" "}
+                Listar usuarios{" "}
+              </Link>
             </Typography>
           </Toolbar>
         </AppBar>
       </div>
 
-    <Switch>
-        <Route exact path='/'>
-            <Padre />
+      <Switch>
+        <Route exact path="/" component={Padre} />
+        <Route path="/counter">
+          <Contador />
         </Route>
-        <Router path='/counter'>
-            <Contador />
-        </Router>
-        <Router path='/login'>
-            <Login />
-        </Router>
-        <Router path='/listarUsuarios'>
-            <ListarUsuarios />
-        </Router>
-    </Switch>
-
+        <Route path="/login">
+          <Login />
+        </Route>
+        {/* <Route path="/listarUsuarios">
+          <ListarUsuarios />
+        </Route> */}
+        {/* <PrivateRoute exact path="/listarUsuarios" component={ListarUsuarios} /> */}
+        <PrivateRoute exact path="/**" component={ListarUsuarios} />
+      </Switch>
     </Router>
   );
 };

@@ -1,12 +1,12 @@
 import './App.css';
-import Padre from './components/Padre';
-import Contador from './components/Ejercicio/Contador/Contador';
+import AuthExample from './routes/routes';
 import Routes from './routes/routes'
 
 function App() {
   return (
     <>
-      <Routes />
+      {/* <Routes /> */}
+      <AuthExample/>
     </>
   )
 }
